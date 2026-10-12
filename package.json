@@ -37,7 +37,7 @@
     "format:check": "node scripts/format.mjs --check",
     "layer-token:next": "node scripts/next-layer-state-token.mjs",
     "layer-token:check": "node scripts/check-layer-state-tokens.mjs",
-    "dev": "vite",
+    "dev": "vite --port 4173 --strictPort",
     "dev:secure": "./scripts/dev-secure.sh",
     "opensky:import": "./scripts/opensky-import-client.sh",
     "build": "vite build",

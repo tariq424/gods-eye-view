@@ -15,7 +15,7 @@ export default defineConfig(({ command, mode }) => {
   for (const [key, value] of Object.entries(loaded)) {
     if (process.env[key] === undefined) process.env[key] = value;
   }
-  return createBrowserViteConfig({
+  const config = createBrowserViteConfig({
     plugins: [
       ...localProviderPlugins({ realtime: { tools: standaloneVoiceTools() } }),
       localMcpPlugin(),
@@ -25,8 +25,14 @@ export default defineConfig(({ command, mode }) => {
     cesiumToken: process.env.CESIUM_ION_TOKEN,
     mapillaryToken: process.env.MAPILLARY_CLIENT_TOKEN,
     host: process.env.HOST,
-    port: process.env.PORT,
+    // Pinned: always 4173, ignoring PORT. strictPort below makes Vite fail
+    // with a clear error instead of silently moving to another port.
+    port: 4173,
     allowedHosts: resolveAllowedHosts(process.env.GEV_ALLOWED_HOSTS),
     command,
   });
+  config.server.strictPort = true;
+  // Hot reload / HMR explicitly on (Vite's default, stated so it can't drift).
+  config.server.hmr = true;
+  return config;
 });
